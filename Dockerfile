@@ -1,4 +1,5 @@
-FROM openjdk:8-jdk-alpine
+FROM adoptopenjdk:14-jre-hotspot as builder
+WORKDIR application
 ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
